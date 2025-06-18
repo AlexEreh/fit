@@ -60,7 +60,10 @@ export class VaultOperations implements IVaultOperations {
             return {path, status: "changed"}
         } else if (!file) {
             this.ensureFolderExists(path)
-            await this.vault.createBinary(path, base64ToArrayBuffer(content))
+			try {
+				await this.vault.createBinary(path, base64ToArrayBuffer(content))
+			} catch (_) {
+			}
             return {path, status: "created"}
         } 
             throw new Error(`${path} writeToLocal operation unsuccessful, vault abstractFile on ${path} is of type ${typeof file}`);
